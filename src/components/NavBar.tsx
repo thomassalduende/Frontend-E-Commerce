@@ -11,10 +11,13 @@ import { useCart } from "@/context/carrito/cart";
 import { useUser } from "@/context/user/user";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { SearchProductos } from "./SearchProductos";
+import { SearchProductosResponsive } from "./SearchProductsResponsive";
 
 
 export const NavBar = () => {
 
+    const [isSearching, setIsSearching] = useState(false);
     const pathname = usePathname()
     const route = useRouter()
 
@@ -23,6 +26,7 @@ export const NavBar = () => {
     const [nav, setNav] = useState(false);
     const handleClick = () => setNav(!nav);
     const handleClose = () => setNav(false);
+    const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
     const { cart } = useCart()
 
     const handleLogout = () => {
@@ -30,15 +34,23 @@ export const NavBar = () => {
         route.push('/iniciar-sesion')
     }
 
+    const toggleSearch = () => {
+        setIsSearchOpen(!isSearchOpen);
+    };
+
 
     return (
         <div className={`w-screen h-[80px] z-10 bg-zinc-200 sticky drop-shadow-lg ${pathname.startsWith('/admin/') ? 'hidden' : ''}`}>
             <div className="px-4 flex justify-between items-center w-full h-full">
                 <div className="flex items-center justify-center">
                     <Link href="/">
-                        <h1 className="text-3xl font-bold mr-4 sm:text-4xl hover:scale-110 transform transition-transform">Book <i className="font-normal">Shop</i></h1>
+                        <h1 className="text-3xl font-bold mr-4 sm:text-4xl hover:scale-110 transform transition-transform max-[640px]:hidden">Book <i className="font-normal">Shop</i></h1>
+                        <h1 className="text-3xl font-bold mr-4 sm:text-4xl hover:scale-110 transform transition-transform min-[640px]:hidden">B<i className="font-normal">Shop</i></h1>
                     </ Link>
-                    <ul className="hidden md:flex xl:ml-[450px] gap-7 ">
+                    <div className='md:hidden'>
+                        <SearchProductosResponsive />
+                    </div>
+                    <ul className="hidden md:flex md:ml-[450px] gap-7 ">
                         <li className=" hover:bg-gray-300 rounded-xl ml-[-90px] hover:scale-110 transform transition-transform">
                             <Link href="/">Libros</Link>
                         </li>
@@ -59,9 +71,10 @@ export const NavBar = () => {
                                 </li>
                             )
                         }
-                        <li className=" hover:bg-gray-300 rounded-xl mt-1 ml-12 hover:scale-110 transform transition-transform">
+                        <li onClick={() => setIsSearching(!isSearching)} className="hover:bg-gray-300 rounded-xl mt-1 hover:scale-110 transform transition-transform">
                             <FaSearch size='22px' />
                         </li>
+                        <SearchProductos isSearching={isSearching} />
                         <li className=" hover:bg-gray-300 rounded-xl mt-1 hover:scale-110 transform transition-transform">
                             <IoMdNotifications size='22px' />
                         </li>

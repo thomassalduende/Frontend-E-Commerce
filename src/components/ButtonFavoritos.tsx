@@ -21,8 +21,6 @@ export const ButtonFavoritos = ({ isbn }: { isbn: string }) => {
         variables: { tokenUser: token, isbn: isbn },
     });
 
-    console.log(data)
-
     const Icons = data && data.ExistFavorito.success ? AiFillHeart : AiOutlineHeart;
 
     const handleRefresh = () => {

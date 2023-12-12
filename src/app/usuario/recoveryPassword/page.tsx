@@ -53,7 +53,7 @@ export default function RecoveyPassword() {
       </button>
       <h5 className="text-lg font-semibold mb-4">Cambiar contraseña</h5>
       <div className="Information-form">
-        <form ref={form}>
+        <form ref={form} onSubmit={handleSubmit}>
           <label className="block mb-2">Password</label>
           <input
             type="password"

@@ -6,6 +6,7 @@ import { ChangeEvent } from "react"
 import Swal from "sweetalert2"
 import { ButtonFavoritos } from "./ButtonFavoritos"
 import { StartsBook } from "./StartsBook"
+import { ComentariosList } from "./ComentariosList"
 
 export function TemprateLibro({ product }: { product: Producto[] }) {
     const { isAuth } = useUser();
@@ -109,6 +110,7 @@ export function TemprateLibro({ product }: { product: Producto[] }) {
             <hr className='my-8 border-t border-gray-300' />
             <div className='grid place-items-center'>
                 {/* Aquí irían los componentes relacionados con comentarios */}
+                <ComentariosList isbn={product[0].isbn} />
             </div>
         </div>
     )

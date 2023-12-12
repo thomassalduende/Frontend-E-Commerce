@@ -78,6 +78,14 @@ export interface Favorito {
     }
 }
 
+export interface Comentario {
+    opinion: string
+    nombre_user: string
+    users: {
+        id: string
+    }
+}
+
 import * as React from "react";
 
 interface StarRatingComponentProps {
