@@ -18,7 +18,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, question, onClose, onConfi
                     <h2 className="text-lg font-bold mb-4">{question}</h2>
                     <div className="flex justify-end">
                         <button
-                            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none"
+                            className="px-4 py-2 mr-3 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none"
                             onClick={onConfirm}
                         >
                             Sí

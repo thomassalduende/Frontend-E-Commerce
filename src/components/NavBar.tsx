@@ -26,7 +26,6 @@ export const NavBar = () => {
     const [nav, setNav] = useState(false);
     const handleClick = () => setNav(!nav);
     const handleClose = () => setNav(false);
-    const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
     const { cart } = useCart()
 
     const handleLogout = () => {
@@ -35,7 +34,7 @@ export const NavBar = () => {
     }
 
     const toggleSearch = () => {
-        setIsSearchOpen(!isSearchOpen);
+        setIsSearching(!isSearching);
     };
 
 
@@ -51,22 +50,22 @@ export const NavBar = () => {
                         <SearchProductosResponsive />
                     </div>
                     <ul className="hidden md:flex md:ml-[450px] gap-7 ">
-                        <li className=" hover:bg-gray-300 rounded-xl ml-[-90px] hover:scale-110 transform transition-transform">
+                        <li onClick={toggleSearch} className=" hover:bg-gray-300 rounded-xl ml-[-90px] hover:scale-110 transform transition-transform">
                             <Link href="/">Libros</Link>
                         </li>
-                        <li className=" hover:bg-gray-300 rounded-xl hover:scale-110 transform transition-transform">
+                        <li onClick={toggleSearch} className=" hover:bg-gray-300 rounded-xl hover:scale-110 transform transition-transform">
                             <Link href="/categorias">Categorias</Link>
                         </li>
                         {
                             isAuth && (
-                                <li className=" hover:bg-gray-300 rounded-xl hover:scale-110 transform transition-transform">
+                                <li onClick={toggleSearch} className=" hover:bg-gray-300 rounded-xl hover:scale-110 transform transition-transform">
                                     <Link href="/favoritos">Favoritos</Link>
                                 </li>
                             )
                         }
                         {
                             isAuth && (
-                                <li className=" hover:bg-gray-300 rounded-xl hover:scale-110 transform transition-transform">
+                                <li onClick={toggleSearch} className=" hover:bg-gray-300 rounded-xl hover:scale-110 transform transition-transform">
                                     <Link href="/historial">Historial</Link>
                                 </li>
                             )

@@ -6,12 +6,14 @@ import { MdMenuOpen } from "react-icons/md";
 import { FaSearch } from "react-icons/fa";
 import { useUser } from "@/context/user/user";
 import { useRouter } from "next/navigation";
+import { SearchProductos } from "../SearchProductos";
+import { SearchProductosResponsive } from "../SearchProductsResponsive";
 
 
 export const NavBar = () => {
 
     const route = useRouter()
-
+    const [isSearching, setIsSearching] = useState(false);
     const { removeAuth } = useUser();
 
     const [nav, setNav] = useState(false);
@@ -22,6 +24,11 @@ export const NavBar = () => {
         removeAuth();
         route.push('/')
     }
+    const toggleSearch = () => {
+        setIsSearching(!isSearching);
+    };
+
+
 
 
     return (
@@ -31,8 +38,15 @@ export const NavBar = () => {
                     <Link href="/">
                         <h1 className="text-3xl font-bold mr-4 sm:text-4xl hover:scale-110 transform transition-transform">Book <i className="font-normal">Shop</i></h1>
                     </ Link>
+                    <div className='md:hidden'>
+                        <SearchProductosResponsive />
+                    </div>
                     <ul className="hidden md:flex xl:ml-[350px] gap-7 ">
-                        <li className=" hover:bg-gray-300 rounded-xl ml-[-90px] hover:scale-110 transform transition-transform">
+                        <li onClick={() => setIsSearching(!isSearching)} className="hover:bg-gray-300 rounded-xl ml-[-90px] hover:scale-110 transform transition-transform">
+                            <FaSearch size='22px' />
+                        </li>
+                        <SearchProductos isSearching={isSearching} />
+                        <li className=" hover:bg-gray-300 rounded-xl hover:scale-110 transform transition-transform">
                             <Link href="/admin">Productos</Link>
                         </li>
                         <li className=" hover:bg-gray-300 rounded-xl  hover:scale-110 transform transition-transform">
