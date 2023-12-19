@@ -50,22 +50,22 @@ export const NavBar = () => {
                         <SearchProductosResponsive />
                     </div>
                     <ul className="hidden md:flex md:ml-[450px] gap-7 ">
-                        <li onClick={toggleSearch} className=" hover:bg-gray-300 rounded-xl ml-[-90px] hover:scale-110 transform transition-transform">
+                        <li className=" hover:bg-gray-300 rounded-xl ml-[-90px] hover:scale-110 transform transition-transform">
                             <Link href="/">Libros</Link>
                         </li>
-                        <li onClick={toggleSearch} className=" hover:bg-gray-300 rounded-xl hover:scale-110 transform transition-transform">
+                        <li className=" hover:bg-gray-300 rounded-xl hover:scale-110 transform transition-transform">
                             <Link href="/categorias">Categorias</Link>
                         </li>
                         {
                             isAuth && (
-                                <li onClick={toggleSearch} className=" hover:bg-gray-300 rounded-xl hover:scale-110 transform transition-transform">
+                                <li className=" hover:bg-gray-300 rounded-xl hover:scale-110 transform transition-transform">
                                     <Link href="/favoritos">Favoritos</Link>
                                 </li>
                             )
                         }
                         {
                             isAuth && (
-                                <li onClick={toggleSearch} className=" hover:bg-gray-300 rounded-xl hover:scale-110 transform transition-transform">
+                                <li className=" hover:bg-gray-300 rounded-xl hover:scale-110 transform transition-transform">
                                     <Link href="/historial">Historial</Link>
                                 </li>
                             )
