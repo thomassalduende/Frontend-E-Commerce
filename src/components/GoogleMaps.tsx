@@ -1,11 +1,11 @@
 'use client'
 import { GoogleMap, Marker, InfoWindow, useJsApiLoader } from '@react-google-maps/api';
-import { constains } from '@/api/constains';
+import { constants } from '@/api/constants';
 
 export const GoogleMaps = () => {
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
-        googleMapsApiKey: constains.ApiKeyMaps
+        googleMapsApiKey: constants.ApiKeyMaps
     });
 
     if (!isLoaded) return (
