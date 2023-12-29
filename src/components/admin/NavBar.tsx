@@ -12,7 +12,6 @@ import { SearchProductosResponsive } from "../SearchProductsResponsive";
 
 export const NavBar = () => {
 
-    const route = useRouter()
     const [isSearching, setIsSearching] = useState(false);
     const { removeAuth } = useUser();
 
@@ -20,16 +19,9 @@ export const NavBar = () => {
     const handleClick = () => setNav(!nav);
     const handleClose = () => setNav(false);
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         removeAuth();
-        route.push('/')
     }
-    const toggleSearch = () => {
-        setIsSearching(!isSearching);
-    };
-
-
-
 
     return (
         <div className='w-screen h-[80px] z-10 bg-zinc-200 sticky drop-shadow-lg'>

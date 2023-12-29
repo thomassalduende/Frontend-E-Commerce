@@ -1,12 +1,14 @@
+'use client'
+import { ChangeEvent, useState } from "react"
+import { ButtonFavoritos } from "./ButtonFavoritos"
+import { ComentariosList } from "./ComentariosList"
+import { Alerta } from "./actions/alerts"
 import { useCart } from "@/context/carrito/cart"
 import { useCartCount } from "@/context/carrito/countCart"
 import { useUser } from "@/context/user/user"
-import { type CartItem, type Producto } from "@/types/types"
-import { ChangeEvent } from "react"
-import Swal from "sweetalert2"
-import { ButtonFavoritos } from "./ButtonFavoritos"
 import { StartsBook } from "./StartsBook"
-import { ComentariosList } from "./ComentariosList"
+import { type CartItem, type Producto } from "@/types/types"
+import Image from "next/image"
 
 export function TemprateLibro({ product }: { product: Producto[] }) {
     const { isAuth } = useUser();
@@ -15,22 +17,9 @@ export function TemprateLibro({ product }: { product: Producto[] }) {
     const isProductInCart = cart.some((item: CartItem) => item.isbn === product[0].isbn) // si el product esta en cart
     const noAddToCart = () => {
         isProductInCart &&
-            Swal.fire({
-                title: 'El producto ya se encuentra en el carrito!',
-                timer: 2500,
-                icon: 'error'
-            })
-
+            Alerta('El producto ya se encuentra en el carrito!', 'error')
     }
     const { setCount } = useCartCount()
-
-    const handleNotify = () => {
-        Swal.fire({
-            title: 'Producto agregado al carrito!',
-            timer: 2500,
-            icon: 'success'
-        })
-    }
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const newValue = event.target.value;
@@ -44,21 +33,16 @@ export function TemprateLibro({ product }: { product: Producto[] }) {
                 ? noAddToCart()
                 : <>
                     {addToCart(product[0])}
-                    {handleNotify()}
+                    {Alerta("Producto agregado al carrito!", 'success')}
                 </>
-            : Swal.fire({
-                title: 'Debe iniciar sesion para ingresar productos al carrito',
-                timer: 2500,
-                icon: 'error'
-            })
+            : Alerta('Debe iniciar sesion para ingresar productos al carrito', 'error')
     }
 
     return (
         <div>
             <div className='grid md:grid-cols-2 gap-8 p-6 md:mx-auto md:w-3/4 bg-white shadow-lg rounded-lg'>
-                <img className='mt-[65px] w-full h-auto md:w-64 md:h-auto object-cover rounded' src={product[0].url_imagen} alt="" />
+                <Image src={product[0].url_imagen} alt="" width={300} height={300} className="mt-[65px] w-full h-auto md:w-64 md:h-auto object-cover rounded ml-8" />
                 <div className='md:px-6'>
-
                     <h3 className='mt-[65px] text-3xl font-semibold mb-4'>{product[0].nombre}</h3>
                     <ButtonFavoritos isbn={product[0].isbn} />
                     <StartsBook isbn={product[0].isbn} />
@@ -97,13 +81,14 @@ export function TemprateLibro({ product }: { product: Producto[] }) {
                     </button>
 
                     <input
-                        className='input-cantidad ml-4 text-center py-1 px-2 border rounded border-gray-400'
+                        className='ml-4 text-center py-1 px-2 border rounded border-gray-400'
                         defaultValue="1"
                         onChange={handleInputChange}
                         type="number"
                         min='1'
                         max={product[0].stock}
                     />
+
                 </div>
             </div>
 

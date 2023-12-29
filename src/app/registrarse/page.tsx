@@ -11,19 +11,19 @@ export default function UserFormLogin() {
     const { activateAuth } = useUser();
     const router = useRouter();
 
-    const [nombre, setNombre] = useState<string>('');
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
     const [errorr, setError] = useState<string>('');
 
     const [createUser, { data, loading, error }] = useMutation(REGISTER)
 
-    const handleRegistration = () => {
-        if (!email || !password) {
-            setError('Por favor, ingresa tu correo electrónico y contraseña.');
+    const registrarse = (formData: FormData) => {
+        const nombre = formData.get('nombre');
+        const email = formData.get('email');
+        const password = formData.get('password');
+
+        if (email && password && nombre == null) {
+            setError('Debe ingresar todos los campos')
             return;
         }
-
         try {
             createUser({
                 variables: { nombre: nombre, email: email, password: password },
@@ -39,27 +39,10 @@ export default function UserFormLogin() {
         } catch (error) {
             setError('Error en la solicitud de inicio de sesión. Inténtalo de nuevo.');
         }
-    };
-
-    const handleNombreChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setNombre(e.target.value);
-    };
-
-    const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
-    };
-
-    const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value);
-    };
-
-    const handleButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        handleRegistration();
-    };
+    }
 
     return (
-        <div className="max-w-md mx-auto m-4 p-6 bg-white shadow-md rounded-md mt-[70px]">
+        <form action={registrarse} className="max-w-md mx-auto m-4 p-6 bg-white shadow-md rounded-md mt-[70px]">
             <h2 className="text-2xl font-bold mb-4">
                 Bienvenidos a Book <i className="font-semibold">Shop</i>
             </h2>
@@ -73,8 +56,7 @@ export default function UserFormLogin() {
                     name="nombre"
                     required
                     className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-                    value={nombre}
-                    onChange={handleNombreChange}
+
                 />
             </div>
             <div className="mb-4">
@@ -87,8 +69,7 @@ export default function UserFormLogin() {
                     name="email"
                     required
                     className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-                    value={email}
-                    onChange={handleEmailChange}
+
                 />
             </div>
             <div className="mb-4">
@@ -100,15 +81,13 @@ export default function UserFormLogin() {
                     id="password"
                     name="password"
                     className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-                    value={password}
-                    onChange={handlePasswordChange}
+
                 />
             </div>
             {errorr && <p className="text-center text-red-500 text-sm mb-4">{errorr}</p>}
             <button
-                type="button"
+                type="submit"
                 className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600 mb-4"
-                onClick={handleButtonClick}
                 disabled={loading}
             >
                 Registrarse
@@ -117,6 +96,6 @@ export default function UserFormLogin() {
                 Ya tienes cuenta? Inicia Sesion!
             </Link>
             <ButtonGoogle />
-        </div>
+        </form>
     );
 }

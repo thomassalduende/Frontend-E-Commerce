@@ -1,76 +1,59 @@
-'use client'
+import { useState } from 'react';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import { useMutation, useQuery } from '@apollo/client';
 import { useUser } from '@/context/user/user';
-import { POST_FAVORITOS } from '@/api/mutations/postFavoritos'
-import { DELETE_FAVORITOS } from '@/api/mutations/deleteFavoritos'
-import { GET_EXIST_FAVORITO } from '@/api/querys/getExistFavoritos'
-import Swal from 'sweetalert2';
-import { useRouter } from 'next/navigation';
-
+import { POST_FAVORITOS } from '@/api/mutations/postFavoritos';
+import { DELETE_FAVORITOS } from '@/api/mutations/deleteFavoritos';
+import { GET_EXIST_FAVORITO } from '@/api/querys/getExistFavoritos';
+import { Alerta } from './actions/alerts';
 
 export const ButtonFavoritos = ({ isbn }: { isbn: string }) => {
-
-    const router = useRouter()
     const { token, isAuth } = useUser();
+    const [esFavorito, setEsFavorito] = useState<boolean>(false);
 
     const [agregarFavoritos] = useMutation(POST_FAVORITOS);
     const [deleteFavoritos] = useMutation(DELETE_FAVORITOS);
     const { data } = useQuery(GET_EXIST_FAVORITO, {
         skip: !isAuth,
         variables: { tokenUser: token, isbn: isbn },
+        fetchPolicy: 'cache-and-network'
     });
 
-    const Icons = data && data.ExistFavorito.success ? AiFillHeart : AiOutlineHeart;
+    if (data && data.ExistFavorito.success === true) {
+        setEsFavorito(true);
+    }
 
-    const handleRefresh = () => {
-        router.refresh();
-    };
+    const Icons = esFavorito ? AiFillHeart : AiOutlineHeart;
 
     const handleFavoritos = () => {
         if (isAuth !== null) {
-            if (data && data.ExistFavorito.success === false) {
+            if (!esFavorito) {
                 agregarFavoritos({ variables: { tokenUser: token, isbn: isbn } })
                     .then(() => {
-                        handleRefresh();
-                        Swal.fire({
-                            timer: 2000,
-                            title: 'Libro agregado a favoritos',
-                            icon: 'success'
-                        })
+                        setEsFavorito(true);
+                        Alerta('Libro agregado a favoritos', 'success')
                     })
                     .catch((error) => {
                         console.error(error);
                     });
-
-            } else if (data && data.ExistFavorito.success === true) {
+            } else {
                 deleteFavoritos({ variables: { tokenUser: token, isbn: isbn } })
                     .then(() => {
-                        handleRefresh();
-                        Swal.fire({
-                            timer: 2000,
-                            title: 'Libro eliminado a favoritos',
-                            icon: 'success'
-                        })
+                        setEsFavorito(false);
+                        Alerta('Libro eliminado de favoritos', 'success')
                     })
                     .catch((error) => {
                         console.error(error);
                     });
             }
         } else {
-            Swal.fire({
-                timer: 2000,
-                title: 'Debe iniciar sesion para agregar a favoritos un libro',
-                icon: 'error'
-            })
+            Alerta('Debe iniciar sesión para agregar a favoritos un libro', 'error')
         }
     };
 
     return (
-        <>
-            <button onClick={handleFavoritos}>
-                <Icons size='32px' />
-            </button>
-        </>
+        <button onClick={handleFavoritos}>
+            <Icons size='32px' />
+        </button>
     );
 };

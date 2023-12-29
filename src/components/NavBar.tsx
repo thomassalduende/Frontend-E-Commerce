@@ -13,29 +13,37 @@ import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { SearchProductos } from "./SearchProductos";
 import { SearchProductosResponsive } from "./SearchProductsResponsive";
+import { Notifications } from "./Notifications";
 
 
 export const NavBar = () => {
 
-    const [isSearching, setIsSearching] = useState(false);
-    const pathname = usePathname()
-    const route = useRouter()
-
     const { isAuth, removeAuth } = useUser();
+    const { cart } = useCart()
 
+    const [isSearching, setIsSearching] = useState<boolean>(false);
+    const [isNotificationsVisible, setIsNotificationsVisible] = useState(false);
     const [nav, setNav] = useState(false);
+
+    const pathname = usePathname()
+
     const handleClick = () => setNav(!nav);
     const handleClose = () => setNav(false);
-    const { cart } = useCart()
+
 
     const handleLogout = () => {
         removeAuth();
-        route.push('/iniciar-sesion')
     }
 
-    const toggleSearch = () => {
-        setIsSearching(!isSearching);
+
+    const handleMouseEnterIcon = () => {
+        setIsNotificationsVisible(true);
     };
+
+    const handleMouseLeaveIcon = () => {
+        setIsNotificationsVisible(false);
+    };
+
 
 
     return (
@@ -58,25 +66,31 @@ export const NavBar = () => {
                         </li>
                         {
                             isAuth && (
-                                <li className=" hover:bg-gray-300 rounded-xl hover:scale-110 transform transition-transform">
-                                    <Link href="/favoritos">Favoritos</Link>
-                                </li>
-                            )
-                        }
-                        {
-                            isAuth && (
-                                <li className=" hover:bg-gray-300 rounded-xl hover:scale-110 transform transition-transform">
-                                    <Link href="/historial">Historial</Link>
-                                </li>
+                                <>
+                                    <li className=" hover:bg-gray-300 rounded-xl hover:scale-110 transform transition-transform">
+                                        <Link href="/favoritos">Favoritos</Link>
+                                    </li>
+
+                                    <li className=" hover:bg-gray-300 rounded-xl hover:scale-110 transform transition-transform">
+                                        <Link href="/historial">Historial</Link>
+                                    </li>
+                                </>
                             )
                         }
                         <li onClick={() => setIsSearching(!isSearching)} className="hover:bg-gray-300 rounded-xl mt-1 hover:scale-110 transform transition-transform">
                             <FaSearch size='22px' />
                         </li>
                         <SearchProductos isSearching={isSearching} />
-                        <li className=" hover:bg-gray-300 rounded-xl mt-1 hover:scale-110 transform transition-transform">
-                            <IoMdNotifications size='22px' />
+                        <li
+                            onMouseEnter={handleMouseEnterIcon}
+                            onMouseLeave={handleMouseLeaveIcon}
+                            className="hover:bg-gray-300 rounded-xl mt-1 hover:scale-110 transform transition-transform"
+                        >
+                            <IoMdNotifications size="22px" />
                         </li>
+                        <Notifications
+                            isNotification={isNotificationsVisible}
+                        />
                         <li className=" hover:bg-gray-300 rounded-xl mt-1 hover:scale-110 transform transition-transform">
                             <Link href={isAuth ? '/usuario' : '/iniciar-sesion'}>
                                 <IoPerson size='22px' />
@@ -107,56 +121,39 @@ export const NavBar = () => {
                         Categorias
                     </Link>
                 </li>
-                {isAuth ? '' :
+                {isAuth ?
                     (
+                        <>
+                            <li className="border-b-2 border-zinc-300 w-full mt-2">
+                                <Link onClick={handleClose} href="/favoritos">
+                                    Favoritos
+                                </Link>
+                            </li>
+                            <li className="border-b-2 border-zinc-300 w-full mt-2">
+                                <Link onClick={handleClose} href="/historial">
+                                    Historial
+                                </Link>
+                            </li>
+                            <li className="border-b-2 border-zinc-300 w-full mt-2">
+                                <Link onClick={handleClose} href="/checkout">
+                                    Carrito
+                                </Link>
+                            </li>
+                            <li className="border-b-2 border-zinc-300 w-full mt-2">
+                                <Link onClick={handleClose} href="/usuario">
+                                    Informacion usuario
+                                </Link>
+                            </li>
+                            <li className="border-b-2 border-zinc-300 w-full mt-2">
+                                <Link onClick={handleLogout} href="/">
+                                    Carrar Sesion
+                                </Link>
+                            </li>
+                        </>
+                    ) : (
                         <li className="border-b-2 border-zinc-300 w-full mt-2">
                             <Link onClick={handleClose} href="/iniciar-sesion">
                                 Iniciar Sesion
-                            </Link>
-                        </li>
-                    )
-                }
-                {
-                    isAuth && (
-                        <li className="border-b-2 border-zinc-300 w-full mt-2">
-                            <Link onClick={handleClose} href="/favoritos">
-                                Favoritos
-                            </Link>
-                        </li>
-                    )
-                }
-                {
-                    isAuth && (
-                        <li className="border-b-2 border-zinc-300 w-full mt-2">
-                            <Link onClick={handleClose} href="/historial">
-                                Historial
-                            </Link>
-                        </li>
-                    )
-                }
-                {
-                    isAuth && (
-                        <li className="border-b-2 border-zinc-300 w-full mt-2">
-                            <Link onClick={handleClose} href="/checkout">
-                                Carrito
-                            </Link>
-                        </li>
-                    )
-                }
-                {
-                    isAuth && (
-                        <li className="border-b-2 border-zinc-300 w-full mt-2">
-                            <Link onClick={handleClose} href="/usuario">
-                                Informacion usuario
-                            </Link>
-                        </li>
-                    )
-                }
-                {
-                    isAuth && (
-                        <li className="border-b-2 border-zinc-300 w-full mt-2">
-                            <Link onClick={handleLogout} href="/">
-                                Carrar Sesion
                             </Link>
                         </li>
                     )

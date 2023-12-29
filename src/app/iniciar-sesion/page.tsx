@@ -1,5 +1,5 @@
 'use client'
-import { useQuery } from '@apollo/client';
+import { useLazyQuery, useQuery } from '@apollo/client';
 import { LOGIN } from '@/api/querys/getUser';
 import { useState } from 'react'
 import { useRouter } from 'next/navigation';
@@ -16,8 +16,7 @@ export default function UserFormLogin() {
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
 
-    const { data, error: queryError } = useQuery(LOGIN, {
-        variables: { email, password },
+    const [loginUser, { data, error: queryError, loading }] = useLazyQuery(LOGIN, {
         onError: (error) => {
             setError('Error en la solicitud de inicio de sesión. Inténtalo de nuevo.');
             console.error('Error:', error);
@@ -31,6 +30,7 @@ export default function UserFormLogin() {
             setError('Por favor, ingresa tu correo electrónico y contraseña.');
             return;
         }
+        loginUser({ variables: { email: email, password: password } });
 
         if (queryError) {
             setError('Error en la solicitud de inicio de sesión. Inténtalo de nuevo.');
@@ -38,11 +38,11 @@ export default function UserFormLogin() {
             return;
         }
 
-        if (data.LoginUser.accessToken === '') {
+        if (data && data.LoginUser.accessToken === '') {
             setError('Error, Usuario no existente / no registrado');
-        } else if (data.LoginUser.user.es_admin === true) {
+        } else if (data && data.LoginUser.user.es_admin === true) {
             try {
-                activateAuth(data.LoginUser.accessToken)
+                activateAuth(data?.LoginUser.accessToken)
                 window.sessionStorage.setItem('token', data.LoginUser.accessToken);
                 router.push('/admin')
             } catch (storageError) {
@@ -91,7 +91,7 @@ export default function UserFormLogin() {
 
             {error && <p className="text-center text-red-500 text-sm mb-4">{error}</p>}
 
-            <button type="submit" className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600">
+            <button disabled={loading} type="submit" className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600">
                 Iniciar sesión
             </button>
 

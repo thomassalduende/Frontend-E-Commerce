@@ -18,19 +18,30 @@ const UserInfo = () => {
         route.push('/')
     }
 
+    const user = {
+        nombre: data && data.LoginUser.user.nombre,
+        dni: data.LoginUser.user.direccion.dni,
+        direccion: data && data.LoginUser.user.direccion.direccion,
+        ciudad: data && data.LoginUser.user.direccion.ciudad.nombre,
+        provincia: data && data.LoginUser.user.direccion.ciudad.provincia.nombre,
+        codigo_postal: data && data.LoginUser.user.direccion.ciudad.cod_postal,
+        telefono: data && data.LoginUser.user.direccion.telefono,
+        informacion: data && data.LoginUser.user.direccion.AgregarInfo
+    }
+
     return (
         <div className="bg-gray-200 p-4 rounded shadow ">
             {isAuth ? (
                 <div className="text-center mt-5">
-                    <h2 className="text-lg font-bold mb-2">Bienvenido/a, {data && data.LoginUser.user.nombre}</h2>
-                    <p className="text-gray-600 mb-4">DNI: {data && data.LoginUser.user.direccion.dni}</p>
-                    <p className="text-gray-600 mb-4">Nombre: {data && data.LoginUser.user.nombre}</p>
-                    <p className="text-gray-600 mb-4">Direccion: {data && data.LoginUser.user.direccion.direccion}</p>
-                    <p className="text-gray-600 mb-4">Ciudad: {data && data.LoginUser.user.direccion.ciudad.nombre}</p>
-                    <p className="text-gray-600 mb-4">Provincia: {data && data.LoginUser.user.direccion.ciudad.provincia.nombre}</p>
-                    <p className="text-gray-600 mb-4">Codigo postal: {data && data.LoginUser.user.direccion.ciudad.cod_postal}</p>
-                    <p className="text-gray-600 mb-4">Telefono: {data && data.LoginUser.user.direccion.telefono}</p>
-                    <p className="text-gray-600 mb-4">Info: {data && data.LoginUser.user.direccion.AgregarInfo}</p>
+                    <h2 className="text-lg font-bold mb-2">Bienvenido/a, {user.nombre}</h2>
+                    <p className="text-gray-600 mb-4">DNI: {user.dni}</p>
+                    <p className="text-gray-600 mb-4">Nombre: {user.nombre}</p>
+                    <p className="text-gray-600 mb-4">Direccion: {user.direccion}</p>
+                    <p className="text-gray-600 mb-4">Ciudad: {user.ciudad}</p>
+                    <p className="text-gray-600 mb-4">Provincia: {user.provincia}</p>
+                    <p className="text-gray-600 mb-4">Codigo postal: {user.codigo_postal}</p>
+                    <p className="text-gray-600 mb-4">Telefono: {user.telefono}</p>
+                    <p className="text-gray-600 mb-4">Info: {user.informacion}</p>
                     <Link href={'/usuario/recoveryPassword'}>
                         <button
                             className='text-white px-4 py-2 rounded bg-slate-800 hover:bg-slate-500 mr-3'>

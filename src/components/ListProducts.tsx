@@ -1,5 +1,6 @@
 import { Product } from './Product';
 import { type Producto } from '@/types/types';
+import { LoadingCardsList } from './suspense/ListBooks';
 
 
 const ListOfProducts = ({ productos }: { productos: Producto[] }) => {
@@ -16,9 +17,7 @@ const ListOfProducts = ({ productos }: { productos: Producto[] }) => {
                 </div>
                 {
                     productos?.length === undefined && (
-                        <h5 className="h-[85vh] w-full text-red-500 grid place-content-center mt-1">
-                            ¡No hay ningún libro con ese nombre, continúa buscando!
-                        </h5>
+                        <LoadingCardsList />
                     )
                 }
             </section>

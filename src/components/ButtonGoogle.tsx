@@ -37,7 +37,7 @@ export const ButtonGoogle = () => {
     };
 
     return (
-        <div style={{ display: 'grid', justifyContent: 'center' }}>
+        <div className="grid justify-center">
             {data && window.sessionStorage.setItem('token', data.LoginGoogle.accessToken)}
             {data && data.LoginGoogle.accessToken && activateAuth && activateAuth(data.LoginGoogle.accessToken)}
             {data && data.LoginGoogle.accessToken && (router.push('/'))}

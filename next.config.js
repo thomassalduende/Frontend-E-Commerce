@@ -5,7 +5,15 @@ const nextConfig = {
             {
                 protocol: 'https',
                 hostname: 'cdn.pixabay.com',
-            }]
+                pathname: '/account123/**',
+            },
+            {
+                hostname: 'm.media-amazon.com'
+            },
+            {
+                hostname: 'cdn.pixabay.com'
+            }
+        ]
     }
 }
 
