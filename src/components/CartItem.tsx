@@ -6,6 +6,7 @@ import { useUser } from '@/context/user/user';
 import { useCart } from '@/context/carrito/cart';
 import { useMutation } from '@apollo/client';
 import Swal from 'sweetalert2';
+import Image from 'next/image';
 
 export function CartItem({ product }: { product: Producto }) {
 
@@ -39,7 +40,7 @@ export function CartItem({ product }: { product: Producto }) {
     return (
         <div className="flex items-center justify-between border-b border-gray-200 py-4">
             <div className="flex items-center space-x-4">
-                <img src={product.url_imagen} alt="" className="w-20 h-20 object-cover rounded" />
+                <Image width={80} height={80} src={product.url_imagen} alt="" className="w-20 h-20 object-cover rounded" />
                 <div>
                     <h3 className="font-semibold">{product.nombre}</h3>
                     <p className="text-gray-600">{product.autor[0].nombre}</p>

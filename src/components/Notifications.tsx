@@ -1,4 +1,5 @@
 import { useUser } from "@/context/user/user";
+import Image from "next/image";
 
 interface NotificationsProps {
     isNotification: boolean;
@@ -20,7 +21,9 @@ export function Notifications({ isNotification }: NotificationsProps) {
                                 <h3 className="font-semibold px-4 mt-2">Notificaciones</h3>
                                 <hr className='my-2 border-gray-300' />
                                 <div className="flex items-center mt-3">
-                                    <img
+                                    <Image
+                                        width={60}
+                                        height={60}
                                         src="https://w7.pngwing.com/pngs/36/932/png-transparent-harry-potter-and-the-chamber-of-secrets-pottermore-book-green-harry-potter-and-the-chamber-of-secrets-label-fm-book.png"
                                         alt="Libro"
                                         className="w-[60px] h-[60px] rounded-full mr-2"

@@ -9,6 +9,7 @@ import Link from 'next/link';
 import Swal from 'sweetalert2';
 import { Modal } from '@/components/Modal';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import Image from 'next/image';
 
 export function Productos({ products, loading }: { products: Producto[], loading: boolean }) {
 
@@ -97,7 +98,7 @@ export function Productos({ products, loading }: { products: Producto[], loading
                                     {products.map((product) => (
                                         <tr key={product.isbn} className='border-b max-[640px]:flex max-[640px]:flex-col max-[640px]:mb-[15px] max-sm:border-s-black'>
                                             <td className='border p-2'>
-                                                <img className='h-12 w-12 object-cover rounded' src={product.url_imagen} alt='' />
+                                                <Image width={50} height={50} className='h-12 w-12 object-cover rounded' src={product.url_imagen} alt='' />
                                             </td>
                                             <td className='border p-2 max-sm:font-bold'>{product.nombre}</td>
                                             <td className='border p-2'>{product.isbn}</td>
